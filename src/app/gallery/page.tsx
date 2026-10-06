@@ -4,6 +4,7 @@ import { useRef } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useGSAP } from '@gsap/react';
+import FloatingGem from '@/components/FloatingGem'; // ← Nhập linh hồn 3D của trang
 
 if (typeof window !== 'undefined') {
   gsap.registerPlugin(ScrollTrigger, useGSAP);
@@ -71,37 +72,49 @@ export default function GalleryPage() {
   );
 
   return (
-    <div ref={containerRef} className="bg-[#FAF6F0] min-h-screen text-[#3D2314] py-14 px-4 sm:px-6 lg:px-8">
-      {/* Header */}
-      <div className="gsap-gallery-header text-center max-w-xl mx-auto mb-12 space-y-3">
-        <span className="inline-block px-3.5 py-1 rounded-full bg-[#EBD8C3] text-[11px] font-semibold tracking-widest uppercase text-[#6B4E3D]">
-          Lookbook
-        </span>
-        <h1 className="text-3xl sm:text-5xl font-serif font-bold tracking-tight">
-          Our Nail Art Gallery
-        </h1>
-        <p className="text-neutral-600 text-sm">
-          A curated collection of designs hand-crafted by our artists.
-        </p>
+    <div ref={containerRef} className="bg-[#FAF6F0] min-h-screen text-[#3D2314] py-14 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+
+      {/* ========================================================================= */}
+      {/* VIÊN ĐÁ QUÝ 3D TRUNG TÂM NỀN (Centered Luxury Background WebGL)          */}
+      {/* ========================================================================= */}
+      <div className="fixed inset-0 flex items-center justify-center pointer-events-none z-0">
+        {/* Độ mờ đặt nhẹ nhàng ở mức 11% - 14% để tôn trọn hình ảnh móng tay sặc sỡ phía trên */}
+        <div className="w-[85vw] h-[85vw] max-w-[480px] max-h-[480px] sm:max-w-[560px] sm:max-h-[560px] opacity-[0.11] sm:opacity-[0.14]">
+          <FloatingGem />
+        </div>
       </div>
 
-      {/* Lưới ảnh */}
-      <div className="max-w-6xl mx-auto grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
-        {GALLERY_IMAGES.map((src, i) => (
-          <div
-            key={i}
-            // Khung ngoài ẩn sẵn để GSAP điều khiển chuyển động và bo tròn che đi phần ảnh thừa khi phóng to
-            className="gsap-image opacity-0 translate-y-10 will-change-transform w-full aspect-square overflow-hidden rounded-xl shadow-xs group cursor-pointer bg-neutral-200"
-          >
-            <img
-              src={src}
-              alt={`Nail design ${i + 1}`}
-              loading="lazy"
-              // Hiệu ứng zoom: Group-hover kích hoạt phóng to 110%, chuyển động lướt cực nhẹ (700ms) tạo vẻ sang trọng
-              className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
-            />
-          </div>
-        ))}
+      {/* NỘI DUNG CHÍNH (z-10 để nổi bật phía trên WebGL) */}
+      <div className="relative z-10 max-w-6xl mx-auto space-y-12">
+        {/* Header */}
+        <div className="gsap-gallery-header text-center max-w-xl mx-auto space-y-3">
+          <span className="inline-block px-3.5 py-1 rounded-full bg-[#EBD8C3] text-[11px] font-semibold tracking-widest uppercase text-[#6B4E3D]">
+            Lookbook
+          </span>
+          <h1 className="text-3xl sm:text-5xl font-serif font-bold tracking-tight">
+            Our Nail Art Gallery
+          </h1>
+          <p className="text-neutral-600 text-sm">
+            A curated collection of designs hand-crafted by our artists.
+          </p>
+        </div>
+
+        {/* Lưới ảnh */}
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
+          {GALLERY_IMAGES.map((src, i) => (
+            <div
+              key={i}
+              className="gsap-image opacity-0 translate-y-10 will-change-transform w-full aspect-square overflow-hidden rounded-xl shadow-xs group cursor-pointer bg-neutral-200"
+            >
+              <img
+                src={src}
+                alt={`Nail design ${i + 1}`}
+                loading="lazy"
+                className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
+              />
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );
