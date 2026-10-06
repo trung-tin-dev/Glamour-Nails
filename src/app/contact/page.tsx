@@ -212,12 +212,11 @@ export default function ContactPage() {
                     </svg>
                   </div>
                   <div>
-                    <h4 className="font-bold text-[#3D2314]">Hotline &amp; WhatsApp</h4>
+                    <h4 className="font-bold text-[#3D2314]">Hotline</h4>
                     <p className="text-neutral-600 text-xs mt-1">
                       <a href="tel:0901234567" className="hover:text-[#9E2A2B] font-medium">
-                        090 123 4567
-                      </a>{' '}
-                      / +84 90 123 4567
+                        0834636991
+                      </a>
                     </p>
                     <span className="text-[11px] text-neutral-400 mt-0.5 block">
                       Concierge support &amp; consultations available 7 days a week
@@ -242,10 +241,10 @@ export default function ContactPage() {
                     </svg>
                   </div>
                   <div>
-                    <h4 className="font-bold text-[#3D2314]">Email Concierge</h4>
+                    <h4 className="font-bold text-[#3D2314]">Email</h4>
                     <p className="text-neutral-600 text-xs mt-1">
-                      <a href="mailto:contact@glamournails.vn" className="hover:text-[#9E2A2B]">
-                        contact@glamournails.vn
+                      <a href="mailto:tatin3469@gmail.com" className="hover:text-[#9E2A2B]">
+                        tatin3469@gmail.com
                       </a>
                     </p>
                   </div>
@@ -306,7 +305,7 @@ export default function ContactPage() {
                     <span>Instagram</span>
                   </a>
                   <a
-                    href="https://facebook.com"
+                    href="https://www.facebook.com/tin.trung.735134"
                     target="_blank"
                     rel="noreferrer"
                     className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-[#FAF6F0] hover:bg-[#9E2A2B] hover:text-white text-xs font-semibold transition-all duration-300"

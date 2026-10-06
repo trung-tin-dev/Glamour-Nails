@@ -44,7 +44,7 @@ export default function Footer() {
 
                             {/* FACEBOOK */}
                             <a
-                                href="https://facebook.com"
+                                href="https://www.facebook.com/tin.trung.735134"
                                 target="_blank"
                                 rel="noreferrer"
                                 className="w-9 h-9 rounded-full bg-[#3D251A] hover:bg-[#E07A7C] text-white flex items-center justify-center transition-all duration-300 hover:scale-110 active:scale-95 shadow-xs"
@@ -181,10 +181,10 @@ export default function Footer() {
                                     <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
                                 </svg>
                                 <a
-                                    href="tel:0901234567"
+                                    href="tel:0834636991"
                                     className="hover:text-[#FAF4ED] transition-colors duration-200"
                                 >
-                                    090 123 4567 / (028) 3822 9999
+                                    0834636991
                                 </a>
                             </li>
 
@@ -203,10 +203,10 @@ export default function Footer() {
                                     <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
                                 </svg>
                                 <a
-                                    href="mailto:contact@glamournails.vn"
+                                    href="mailto:tatin3469@gmail.com"
                                     className="hover:text-[#FAF4ED] transition-colors duration-200"
                                 >
-                                    contact@glamournails.vn
+                                    tatin3469@gmail.com
                                 </a>
                             </li>
                         </ul>
