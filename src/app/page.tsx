@@ -6,6 +6,7 @@ import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useGSAP } from '@gsap/react';
 import HeroSectionGSAP from '@/components/HeroSection';
+import FloatingGem from '@/components/FloatingGem'; // ← Nhập 3D trang trí nền
 
 if (typeof window !== 'undefined') {
   gsap.registerPlugin(ScrollTrigger, useGSAP);
@@ -58,15 +59,6 @@ const FEATURED_SERVICES = [
   },
 ];
 
-const GALLERY_ITEMS = [
-  { id: 1, title: 'Glazed Donut Chrome Pearl', category: 'chrome', categoryName: 'Chrome Glaze', image: 'https://images.unsplash.com/photo-1632345031435-8727f6897d53?auto=format&fit=crop&w=800&q=80', likes: 342 },
-  { id: 2, title: 'Soft Blush French Ombré', category: 'french', categoryName: 'French & Ombré', image: 'https://images.unsplash.com/photo-1599940824399-b87987ceb72a?auto=format&fit=crop&w=800&q=80', likes: 489 },
-  { id: 3, title: '9D Galaxy Diamond Cat Eye', category: 'cateye', categoryName: 'Cat Eye', image: 'https://images.unsplash.com/photo-1604654894610-df63bc536371?auto=format&fit=crop&w=800&q=80', likes: 512 },
-  { id: 4, title: 'Rose Quartz Marble & 24K Gold Leaf', category: 'art', categoryName: 'Hand-Painted Art', image: 'https://images.unsplash.com/photo-1582095133179-bfd08e2fc6b3?auto=format&fit=crop&w=800&q=80', likes: 278 },
-  { id: 5, title: 'Minimalist Korean Blush with Bow Charm', category: 'minimal', categoryName: 'K-Style Minimal', image: 'https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&w=800&q=80', likes: 620 },
-  { id: 6, title: 'Royal Gala Crystal Accents', category: 'art', categoryName: 'Hand-Painted Art', image: 'https://images.unsplash.com/photo-1519014816548-bf5fe059798b?auto=format&fit=crop&w=800&q=80', likes: 395 },
-];
-
 const TESTIMONIALS = [
   { id: 1, name: 'Emily Watson', role: 'Loyal Client', avatar: 'https://plus.unsplash.com/premium_photo-1739178656567-068b26a4b979?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1yZWxhdGVkfDR8fHxlbnwwfHx8fHw%3D', rating: 5, comment: 'The Russian manicure here is by far the cleanest and gentlest I have ever experienced. My gel polish stays flawless for a whole month with zero chipping.', service: 'Russian Gel Manicure' },
   { id: 2, name: 'Sophia Laurent', role: 'Verified Booking', avatar: 'https://images.unsplash.com/photo-1728577740843-5f29c7586afe?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8YXZhdGFyfGVufDB8fDB8fHww', rating: 5, comment: 'The atmosphere is pure serenity. Gentle music, soothing lavender scent, and the herbal rose pedicure with hot stones made all my stress melt away.', service: 'Herbal Rose Pedicure' },
@@ -74,14 +66,7 @@ const TESTIMONIALS = [
 ];
 
 export default function HomePage() {
-  const [activeTab, setActiveTab] = useState('all');
   const mainContainerRef = useRef<HTMLDivElement>(null);
-  const lookbookGridRef = useRef<HTMLDivElement>(null);
-
-  const filteredGallery =
-    activeTab === 'all'
-      ? GALLERY_ITEMS
-      : GALLERY_ITEMS.filter((item) => item.category === activeTab);
 
   // GSAP Layered Pinning & Horizontal Scroll Integration
   useGSAP(
@@ -110,7 +95,6 @@ export default function HomePage() {
             scrollTrigger: {
               trigger: panel,
               start: 'top 80px',
-              // QUAN TRỌNG: Cộng thêm windowHeight để giữ Panel 3 ghim lại đủ lâu cho Panel 4 bò lên đè lên nó
               end: () => `+=${getScrollAmount() + windowHeight}`,
               pin: true,
               pinSpacing: true,
@@ -123,7 +107,7 @@ export default function HomePage() {
           tl.to(strip, {
             x: () => -getScrollAmount(),
             ease: 'none',
-            duration: 1, // Tỷ trọng thời gian tương ứng với quãng đường cuộn ngang
+            duration: 1,
           });
 
           // Phase 2: Panel 3 đứng yên và mờ/thu nhỏ dần trong lúc Panel 4 cuộn lên chồng đè
@@ -131,12 +115,12 @@ export default function HomePage() {
             scale: 0.92,
             opacity: 0.4,
             ease: 'power1.inOut',
-            duration: () => windowHeight / getScrollAmount(), // Tỷ lệ kéo dài vừa khớp với tốc độ cuộn dọc
+            duration: () => windowHeight / getScrollAmount(),
           });
 
         } else {
           // ==========================================
-          // KHU VỰC XẾP CHỒNG DỌC (Panel 1, 2, 4)
+          // KHU VỰC XẾP CHỒNG DỌC (Panel 1, 2, 5)
           // ==========================================
           const innerPanel = panel.querySelector<HTMLElement>('.gsap-panel-inner');
           if (!innerPanel) return;
@@ -187,21 +171,10 @@ export default function HomePage() {
     { scope: mainContainerRef }
   );
 
-  const handleTabChange = (key: string) => {
-    setActiveTab(key);
-    if (lookbookGridRef.current) {
-      gsap.fromTo(
-        lookbookGridRef.current.children,
-        { opacity: 0, scale: 0.95, y: 15 },
-        { opacity: 1, scale: 1, y: 0, duration: 0.4, stagger: 0.05, ease: 'power2.out' }
-      );
-    }
-  };
-
   return (
     <div ref={mainContainerRef} className="bg-[#1C120C] text-[#3D2314] overflow-x-hidden relative">
       {/* ========================================================================= */}
-      {/* PANEL 1: HERO SECTION (z-10)                                             */}
+      {/* PANEL 1: HERO SECTION (Đã tích hợp 3D chìm trung tâm trong component)    */}
       {/* ========================================================================= */}
       <section className="gsap-panel w-full h-[calc(100vh-80px)] overflow-hidden rounded-b-3xl shadow-2xl bg-[#FAF6F0] border-b border-[#E8DAC7]/50 z-10 relative">
         <div className="gsap-panel-inner h-full w-full">
@@ -280,27 +253,24 @@ export default function HomePage() {
             </div>
           </div>
 
-          {/* Dải dịch vụ tối giản (Click vào bất kỳ đâu trên card để Book) */}
+          {/* Dải dịch vụ tối giản */}
           {FEATURED_SERVICES.map((service) => (
             <Link
               key={service.id}
               href="/booking"
               className="group w-[75vw] sm:w-[42vw] lg:w-[22vw] h-[68vh] min-h-[420px] max-h-[520px] bg-white rounded-3xl overflow-hidden shadow-xs hover:shadow-xl transition-all duration-300 flex flex-col shrink-0 border border-[#E8DAC7]/40"
             >
-              {/* Ảnh chiếm 60% chiều cao + Hiệu ứng Zoom nhẹ */}
               <div className="relative h-[60%] w-full overflow-hidden bg-neutral-100 shrink-0">
                 <img
                   src={service.image}
                   alt={service.name}
                   className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
                 />
-                {/* Giá tiền đặt tinh tế ở góc dưới ảnh */}
                 <div className="absolute bottom-3 left-3 bg-[#3D2314]/90 backdrop-blur-md text-[#FAF6F0] text-xs font-semibold px-3 py-1 rounded-full">
                   {service.price}
                 </div>
               </div>
 
-              {/* Phần text tinh giản phía dưới */}
               <div className="p-6 flex-1 flex flex-col justify-between bg-white">
                 <div className="space-y-1.5">
                   <div className="text-[10px] tracking-widest text-[#9E2A2B] font-semibold uppercase">
@@ -311,7 +281,6 @@ export default function HomePage() {
                   </h3>
                 </div>
 
-                {/* Nút hành động chữ tối giản kèm mũi tên trượt */}
                 <div className="flex items-center text-xs font-bold text-[#3D2314] gap-1 group-hover:text-[#9E2A2B] transition-colors duration-300 pt-2">
                   <span>Book Treatment</span>
                   <span className="transition-transform duration-300 group-hover:translate-x-1.5">→</span>
@@ -323,72 +292,21 @@ export default function HomePage() {
       </section>
 
       {/* ========================================================================= */}
-      {/* PANEL 4: LOOKBOOK GALLERY (z-40)                                         */}
-      {/* ========================================================================= */}
-      {/* <section className="gsap-panel w-full h-[calc(100vh-80px)] overflow-hidden rounded-3xl shadow-2xl bg-[#FAF6F0] border-b border-[#E8DAC7]/50 z-40 relative">
-        <div className="gsap-panel-inner w-full py-16 px-4 sm:px-8 lg:px-16">
-          <div className="max-w-7xl mx-auto">
-            <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4">
-              <div>
-                <span className="text-[10px] font-semibold uppercase tracking-widest text-[#9E2A2B] bg-[#9E2A2B]/10 px-3 py-1 rounded-full">
-                  TRENDING LOOKS
-                </span>
-                <h2 className="text-2xl sm:text-4xl font-serif font-bold text-[#3D2314] mt-2">
-                  Inspiration For Your Next Manicure
-                </h2>
-              </div>
-              <div className="flex flex-wrap gap-1.5">
-                {[
-                  { key: 'all', label: 'All' },
-                  { key: 'chrome', label: 'Chrome' },
-                  { key: 'french', label: 'French' },
-                  { key: 'cateye', label: 'Cat Eye' },
-                  { key: 'art', label: 'Art' },
-                ].map((tab) => (
-                  <button
-                    key={tab.key}
-                    onClick={() => handleTabChange(tab.key)}
-                    className={`px-3.5 py-1.5 rounded-full text-[11px] font-semibold transition-all cursor-pointer ${activeTab === tab.key
-                      ? 'bg-[#9E2A2B] text-white shadow-sm'
-                      : 'bg-white border border-[#E8DAC7] text-[#3D2314] hover:bg-[#F5EBDD]'
-                      }`}
-                  >
-                    {tab.label}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            <div ref={lookbookGridRef} className="grid grid-cols-2 lg:grid-cols-3 gap-4">
-              {filteredGallery.map((item) => (
-                <div
-                  key={item.id}
-                  className="group relative rounded-xl overflow-hidden aspect-[4/3] bg-white border border-[#E8DAC7]/50 cursor-pointer shadow-xs"
-                >
-                  <img src={item.image} alt={item.title} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4 text-white">
-                    <span className="text-[9px] uppercase tracking-wide text-rose-300">{item.categoryName}</span>
-                    <h4 className="font-serif font-semibold text-sm mt-0.5">{item.title}</h4>
-                    <div className="flex items-center justify-between text-[10px] mt-2 pt-2 border-t border-white/20">
-                      <span>❤️ {item.likes} loves</span>
-                      <span className="underline">Book Now</span>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section> */}
-
-      {/* ========================================================================= */}
       {/* PANEL 5: TESTIMONIALS (z-50)                                             */}
       {/* ========================================================================= */}
-      {/* ========================================================================= */}
-      {/* PANEL 5: TESTIMONIALS                                                     */}
-      {/* ========================================================================= */}
-      <section className="gsap-panel w-full min-h-[calc(100vh-80px)] flex flex-col justify-center rounded-t-3xl shadow-2xl bg-[#FAF4ED] pb-12 z-50 relative">
-        <div className="w-full py-16 px-4 sm:px-8 lg:px-16">
+      <section className="gsap-panel w-full min-h-[calc(100vh-80px)] flex flex-col justify-center rounded-t-3xl shadow-2xl bg-[#FAF4ED] pb-12 z-50 relative overflow-hidden">
+
+        {/* ========================================================================= */}
+        {/* 3D GEM CHÌM NỀN (Centered Background Watermark cho phần Testimonials)   */}
+        {/* ========================================================================= */}
+        <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-0">
+          <div className="w-[85vw] h-[85vw] max-w-[420px] max-h-[420px] sm:max-w-[500px] sm:max-h-[500px] opacity-[0.11] sm:opacity-[0.14]">
+            <FloatingGem />
+          </div>
+        </div>
+
+        {/* Nội dung Testimonial nổi lên trên (z-10) */}
+        <div className="w-full py-16 px-4 sm:px-8 lg:px-16 relative z-10">
           <div className="max-w-7xl mx-auto">
             {/* Tiêu đề */}
             <div className="text-center max-w-2xl mx-auto mb-12 space-y-2">

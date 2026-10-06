@@ -5,6 +5,7 @@ import Link from 'next/link';
 import gsap from 'gsap';
 import { TextPlugin } from 'gsap/TextPlugin';
 import { useGSAP } from '@gsap/react';
+import FloatingGem from '@/components/FloatingGem'; // ← THÊM DÒNG NÀY
 
 gsap.registerPlugin(TextPlugin);
 
@@ -62,6 +63,19 @@ export default function HeroSectionGSAP() {
 
             {/* Ambient Gradient Overlay */}
             <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/70 z-10" />
+
+            {/* ========================================================================= */}
+            {/* VIÊN NGỌC 3D LƠ LỬNG TRUNG TÂM (Nằm đằng sau chữ nhưng đè trên video nền) */}
+            {/* ========================================================================= */}
+            <div
+                className="absolute inset-0 flex items-center justify-center pointer-events-none"
+                style={{ zIndex: 15 }} // Đảm bảo z-index nằm giữa z-10 (overlay) và z-20 (content)
+            >
+                {/* Kích thước lớn mờ ảo sang trọng làm nền cho chữ gõ */}
+                <div className="w-[75vw] h-[75vw] max-w-[320px] max-h-[320px] sm:max-w-[450px] sm:max-h-[450px] opacity-[0.24] sm:opacity-[0.28]">
+                    <FloatingGem />
+                </div>
+            </div>
 
             {/* Hero Content */}
             <div className="relative z-20 text-center text-white px-6 max-w-4xl mx-auto space-y-6 pt-4">
